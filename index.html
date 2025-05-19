@@ -1,16 +1,561 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 
 <head>
-    <title>Chust Toshkent Taxi | Toshkent Chust Taxi | Bot @chust_toshkent_taxi_bot</title>
-    <meta name="description" content="Закажите такси между Чустом и Ташкентом через Telegram-бота.">
-    <link rel="alternate" type="application/x-tg-bot" href="tg://resolve?domain=chust_toshkent_taxi_bot">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toshkent Chust Taxi - Telegram Bot</title>
+    <meta name="description"
+        content="Быстрый поиск попутчиков между Ташкентом и Чустом. Надёжно, удобно и просто через Telegram!">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #111827;
+            line-height: 1.5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header styles */
+        header {
+            padding: 1rem 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #FACC15;
+            overflow: hidden;
+            background-color: #f3f4f6;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        /* Language switcher */
+        .language-switcher {
+            display: flex;
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .language-btn {
+            border: none;
+            background: none;
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .language-btn.active {
+            background-color: #FACC15;
+            color: #111827;
+            font-weight: 600;
+        }
+
+        /* Hero section */
+        .hero {
+            background: linear-gradient(to bottom, #FACC15, #FDE047);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero-logo {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 4px solid white;
+            margin: 0 auto 1.5rem;
+            overflow: hidden;
+            background-color: #f3f4f6;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #111827;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            max-width: 36rem;
+            margin: 0 auto 2rem;
+            color: #1F2937;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #2563EB;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: #1D4ED8;
+            transform: scale(1.05);
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* Features section */
+        .features {
+            padding: 4rem 0;
+            background-color: white;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #EAB308;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            color: #4B5563;
+        }
+
+        /* How it works section */
+        .how-it-works {
+            padding: 4rem 0;
+            background-color: #f3f4f6;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .step-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-icon-wrapper {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            background-color: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        .step-icon {
+            font-size: 1.5rem;
+            color: #3B82F6;
+        }
+
+        .step-number {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background-color: #FACC15;
+            color: white;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-description {
+            color: #4B5563;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #111827;
+            color: white;
+            padding: 2rem 0;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .footer-info {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-subtitle {
+            color: #9CA3AF;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-link {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background-color: #2563EB;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .social-link:hover {
+            background-color: #1D4ED8;
+        }
+
+        .contact-info {
+            color: #9CA3AF;
+            font-size: 0.875rem;
+            text-align: center;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-item i {
+            margin-right: 0.5rem;
+        }
+
+        .footer-bottom {
+            width: 100%;
+            text-align: center;
+            padding-top: 1rem;
+            border-top: 1px solid #1F2937;
+            color: #6B7280;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive styles */
+        @media (min-width: 768px) {
+            .logo-img {
+                width: 48px;
+                height: 48px;
+            }
+
+            .hero-logo {
+                width: 160px;
+                height: 160px;
+            }
+
+            .hero-title {
+                font-size: 3.75rem;
+            }
+
+            .hero-description {
+                font-size: 1.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .steps-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .footer-container {
+                flex-direction: row;
+            }
+
+            .footer-content {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+
+            .footer-info {
+                text-align: left;
+                margin-bottom: 0;
+            }
+
+            .contact-info {
+                text-align: right;
+            }
+
+            .contact-item {
+                justify-content: flex-end;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Chust Toshkent Taxi | Toshkent Chust Taxi</h1>
-    <p>Atigi 5 daqida ichida taxi chaqiring:</p>
-    <a href="https://t.me/chust_toshkent_taxi_bot " class="button">Botga o'tish</a>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-img">
+                    <!-- Placeholder for logo image -->
+                </div>
+                <span class="logo-text">TCT</span>
+            </div>
+            <div class="language-switcher">
+                <button class="language-btn" data-lang="uz">UZ</button>
+                <button class="language-btn active" data-lang="ru">RU</button>
+                <button class="language-btn" data-lang="en">EN</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-logo">
+                    <!-- Placeholder for hero logo image -->
+                </div>
+                <h1 class="hero-title">Toshkent Chust Taxi</h1>
+                <p class="hero-description">
+                    Быстрый поиск попутчиков между Ташкентом и Чустом. Надёжно, удобно и просто через Telegram!
+                </p>
+                <a href="https://t.me/chust_toshkent_taxi_bot" target="_blank" rel="noopener noreferrer"
+                    class="btn btn-primary btn-lg">
+                    <i class="fab fa-telegram"></i>
+                    Запустить бота
+                </a>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Наши преимущества</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Безопасно</h3>
+                        <p class="feature-description">
+                            Проверенные водители и пассажиры для вашего спокойствия и комфорта
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 class="feature-title">Мгновенно</h3>
+                        <p class="feature-description">
+                            Быстрый поиск и подбор попутчиков без долгого ожидания
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-phone-slash"></i>
+                        </div>
+                        <h3 class="feature-title">Без лишних звонков</h3>
+                        <p class="feature-description">
+                            Всё общение через удобный интерфейс Telegram-бота
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works">
+            <div class="container">
+                <h2 class="section-title">Как это работает</h2>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-icon-wrapper">
+                            <i class="fab fa-telegram-plane step-icon"></i>
+                        </div>
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Нажми старт</h3>
+                        <p class="step-description">
+                            Запустите бота в Telegram и начните общение
+                        </p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-icon-wrapper">
+                            <i class="fas fa-user-plus step-icon"></i>
+                        </div>
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Введи данные</h3>
+                        <p class="step-description">
+                            Укажите маршрут, время и другие детали поездки
+                        </p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-icon-wrapper">
+                            <i class="fas fa-car step-icon"></i>
+                        </div>
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Получи попутчика</h3>
+                        <p class="step-description">
+                            Бот подберет подходящего водителя или пассажира
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h2 class="footer-title">Toshkent Chust Taxi</h2>
+                    <p class="footer-subtitle">Быстрый и удобный поиск попутчиков</p>
+                </div>
+                <div>
+                    <div class="social-links">
+                        <a href="https://t.me/chust_toshkent_taxi_bot" target="_blank" rel="noopener noreferrer"
+                            class="social-link">
+                            <i class="fab fa-telegram-plane"></i>
+                        </a>
+                    </div>
+                    <div class="contact-info">
+                        <p class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +998 XX XXX XX XX
+                        </p>
+                        <p class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            info@chusttaxi.uz
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                © <span id="current-year"></span> Toshkent Chust Taxi. Все права защищены.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Language switcher functionality
+        const languageBtns = document.querySelectorAll('.language-btn');
+        languageBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                languageBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+
+                // Here you would normally implement language switching logic
+                // For demonstration purposes, we're just toggling the active state
+            });
+        });
+    </script>
 </body>
 
 </html>
